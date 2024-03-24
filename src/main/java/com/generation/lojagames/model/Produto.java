@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -18,20 +18,24 @@ public class Produto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotBlank(message = "O atributo nome é obrigatório")
+
+	@NotNull(message = "O atributo nome é obrigatório")
 	private String nome;
-	
-	@NotBlank(message = "A descrição é obrigatória")
+
+	@NotNull(message = "A descrição é obrigatória")
 	@Size(min = 10, max = 1000, message = "A descrição deve conter no minimo 10 caracteres e no máximo 1000")
 	private String descricao;
-	
-	
+
+
 	private double preco;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
+
+	@ManyToOne
+	@JoinColumn(name = "usuario_id") // Assuming there's a foreign key column in Produto referencing Usuario
+	private Usuario usuario;
 
 	public Long getId() {
 		return id;
@@ -72,6 +76,12 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-	
-	
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 }
